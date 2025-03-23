@@ -12,16 +12,24 @@
     </header>
     <main>
         <section id="task-form-section">
-            <h2>Add Task</h2>
+            <h2>Create a New Task</h2>
             <form id="task-form">
-                <input type="text" id="task-title" placeholder="Task Title" required>
-                <textarea id="task-desc" placeholder="Description"></textarea>
+                <label for="task-title">Task Name</label>
+                <input type="text" id="task-title" placeholder="Enter task name" required>
+                
+                <label for="task-desc">Task Description</label>
+                <textarea id="task-desc" placeholder="Enter task details"></textarea>
+                
+                <label for="task-date">Task Due Date</label>
                 <input type="date" id="task-date" required>
+                
+                <label for="task-status">Task Status</label>
                 <select id="task-status">
                     <option value="pending">Pending</option>
                     <option value="inprogress">In Progress</option>
                     <option value="completed">Completed</option>
                 </select>
+                
                 <button type="submit">Add Task</button>
             </form>
         </section>

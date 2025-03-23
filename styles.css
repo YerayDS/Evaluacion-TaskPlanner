@@ -1,15 +1,22 @@
+* {
+    box-sizing: border-box; /* Asegura que el padding y el borde no afecten el tamaño total */
+}
+
 body {
-    font-family: Arial, sans-serif;
+    font-family: 'Poppins', sans-serif;
     margin: 0;
     padding: 0;
-    background-color: #f4f4f4;
+    background-color: #f0f8ff;
     text-align: center;
+    color: #333;
 }
 
 header {
-    background-color: #333;
+    background-color: #0077b6;
     color: white;
-    padding: 1rem;
+    padding: 1.5rem;
+    font-size: 1.5rem;
+    text-transform: uppercase;
 }
 
 main {
@@ -21,32 +28,77 @@ form {
     flex-direction: column;
     max-width: 400px;
     margin: auto;
+    background: white;
+    padding: 1.5rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+label {
+    font-weight: bold;
+    margin-top: 0.5rem;
+    text-align: left;
 }
 
 input, textarea, select, button {
     margin: 0.5rem 0;
-    padding: 0.5rem;
+    padding: 0.75rem;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    font-size: 1rem;
+}
+
+button {
+    background-color: #0077b6;
+    color: white;
+    cursor: pointer;
+    font-weight: bold;
+    border: none;
+}
+
+button:hover {
+    background-color: #005f87;
 }
 
 #task-columns {
     display: flex;
     justify-content: space-around;
     margin-top: 2rem;
+    flex-wrap: wrap; /* Permite que las columnas se ajusten si es necesario */
+    align-items: flex-start; /* Asegura que las columnas no se alineen a la misma altura */
+    gap: 20px; /* Espaciado entre las columnas */
 }
 
 .task-column {
     width: 30%;
     background: white;
     padding: 1rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    height: auto; /* Permite que la altura de las columnas se ajuste al contenido */
+    min-height: 100px;  /* Asegura que las columnas tengan al menos 100px de altura */
+    display: flex;
+    flex-direction: column;
+    border: 1px solid #ccc; /* Asegura que las 3 columnas tengan borde */
+}
+
+.task-column h2 {
+    background-color: #0077b6;
+    color: white;
+    padding: 0.75rem;
     border-radius: 5px;
-    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
 }
 
 .task-list {
-    min-height: 100px;
+    flex-grow: 1;
     padding: 10px;
-    background-color: #f9f9f9;
     border-radius: 5px;
+    margin-top: 1rem;
+    transition: border 0.3s ease;
+}
+
+.task-list-with-border {
+    background-color: #e0f7fa;
 }
 
 .task-item {
