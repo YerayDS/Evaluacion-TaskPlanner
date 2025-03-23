@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TaskPlanner</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <h1>TaskPlanner</h1>
+    </header>
+    <main>
+        <section id="task-form-section">
+            <h2>Add Task</h2>
+            <form id="task-form">
+                <input type="text" id="task-title" placeholder="Task Title" required>
+                <textarea id="task-desc" placeholder="Description"></textarea>
+                <input type="date" id="task-date" required>
+                <select id="task-status">
+                    <option value="pending">Pending</option>
+                    <option value="inprogress">In Progress</option>
+                    <option value="completed">Completed</option>
+                </select>
+                <button type="submit">Add Task</button>
+            </form>
+        </section>
+        
+        <section id="task-columns">
+            <div class="task-column">
+                <h2>Pending</h2>
+                <div id="pending-tasks" class="task-list"></div>
+            </div>
+            <div class="task-column">
+                <h2>In Progress</h2>
+                <div id="inprogress-tasks" class="task-list"></div>
+            </div>
+            <div class="task-column">
+                <h2>Completed</h2>
+                <div id="completed-tasks" class="task-list"></div>
+            </div>
+        </section>
+    </main>
+    <script src="app.js"></script>
+</body>
+</html>

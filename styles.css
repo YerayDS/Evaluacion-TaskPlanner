@@ -1,0 +1,58 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+    text-align: center;
+}
+
+header {
+    background-color: #333;
+    color: white;
+    padding: 1rem;
+}
+
+main {
+    padding: 2rem;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    max-width: 400px;
+    margin: auto;
+}
+
+input, textarea, select, button {
+    margin: 0.5rem 0;
+    padding: 0.5rem;
+}
+
+#task-columns {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 2rem;
+}
+
+.task-column {
+    width: 30%;
+    background: white;
+    padding: 1rem;
+    border-radius: 5px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+}
+
+.task-list {
+    min-height: 100px;
+    padding: 10px;
+    background-color: #f9f9f9;
+    border-radius: 5px;
+}
+
+.task-item {
+    background: white;
+    padding: 1rem;
+    margin: 0.5rem 0;
+    border-radius: 5px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+}
