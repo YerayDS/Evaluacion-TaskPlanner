@@ -50,27 +50,61 @@ function loadTasks() {
     renderTasks();
 }
 
-// Renderizar las tareas
-function renderTasks() {
+function renderTasks(filter = "all") {
     const pendingList = document.getElementById("pending-tasks");
     const inProgressList = document.getElementById("inprogress-tasks");
     const completedList = document.getElementById("completed-tasks");
+
+    const pendingColumn = document.getElementById("pending-column");
+    const inProgressColumn = document.getElementById("inprogress-column");
+    const completedColumn = document.getElementById("completed-column");
+    const taskContainer = document.querySelector(".task-columns");
 
     pendingList.innerHTML = "";
     inProgressList.innerHTML = "";
     completedList.innerHTML = "";
 
-    const pending = tasks.filter(task => task.status === "pending");
-    const inProgress = tasks.filter(task => task.status === "inprogress");
-    const completed = tasks.filter(task => task.status === "completed");
+    let filteredTasks = tasks;
+    if (filter !== "all") {
+        filteredTasks = tasks.filter(task => task.status === filter);
+    }
 
-    pending.sort((a, b) => a.taskDate - b.taskDate);
-    inProgress.sort((a, b) => a.taskDate - b.taskDate);
-    completed.sort((a, b) => a.taskDate - b.taskDate);
+    pendingColumn.classList.add("hidden");
+    inProgressColumn.classList.add("hidden");
+    completedColumn.classList.add("hidden");
 
-    pending.forEach(task => appendTaskToColumn(pendingList, task));
-    inProgress.forEach(task => appendTaskToColumn(inProgressList, task));
-    completed.forEach(task => appendTaskToColumn(completedList, task));
+    if (filter === "all" || filter === "pending") {
+        pendingColumn.classList.remove("hidden");
+        filteredTasks
+            .filter(task => task.status === "pending")
+            .forEach(task => appendTaskToColumn(pendingList, task));
+    }
+    if (filter === "all" || filter === "inprogress") {
+        inProgressColumn.classList.remove("hidden");
+        filteredTasks
+            .filter(task => task.status === "inprogress")
+            .forEach(task => appendTaskToColumn(inProgressList, task));
+    }
+    if (filter === "all" || filter === "completed") {
+        completedColumn.classList.remove("hidden");
+        filteredTasks
+            .filter(task => task.status === "completed")
+            .forEach(task => appendTaskToColumn(completedList, task));
+    }
+
+    // Centrar la columna si solo hay una visible
+    const visibleColumns = document.querySelectorAll(".task-column:not(.hidden)");
+    if (visibleColumns.length === 1) {
+        visibleColumns[0].classList.add("centered");
+    } else {
+        document.querySelectorAll(".task-column").forEach(col => col.classList.remove("centered"));
+    }
+}
+
+
+function filterTasks() {
+    const filterValue = document.getElementById("task-filter").value;
+    renderTasks(filterValue);
 }
 
 function appendTaskToColumn(taskListElement, task) {
@@ -96,14 +130,14 @@ function updateStatus(id, newStatus) {
     if (taskIndex !== -1) {
         tasks[taskIndex].status = newStatus;
         localStorage.setItem("tasks", JSON.stringify(tasks));
-        renderTasks();
+        renderTasks(document.getElementById("task-filter").value);
     }
 }
 
 function deleteTask(id) {
     tasks = tasks.filter(task => task.id !== id);
     localStorage.setItem("tasks", JSON.stringify(tasks));
-    renderTasks();
+    renderTasks(document.getElementById("task-filter").value);
 }
 
 function editTask(id) {

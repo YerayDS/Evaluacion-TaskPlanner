@@ -88,6 +88,15 @@ button:hover {
     border: 1px solid #ccc;
 }
 
+.hidden {
+    display: none !important;
+}
+
+.centered {
+    flex: 0 0 50%;
+    margin: 0 auto;
+}
+
 
 .task-column h2 {
     background-color: #0077b6;
