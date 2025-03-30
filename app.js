@@ -325,22 +325,23 @@ function getNews() {
 }
 
 function renderNews(articles) {
-    const newsList = document.getElementById("news-list");
-    newsList.innerHTML = ""; // Limpiar cualquier contenido previo
+    const newsContainer = document.getElementById("news-container");
+    newsContainer.innerHTML = ""; // Limpiar antes de renderizar nuevas noticias
 
     articles.forEach(article => {
         const newsItem = document.createElement("div");
         newsItem.classList.add("news-item");
 
-        // Crear el contenido HTML para cada artículo de noticias
+        // Crear el contenido HTML para cada noticia
         newsItem.innerHTML = `
             <h3><a href="${article.url}" target="_blank">${article.title}</a></h3>
             <p>${article.description}</p>
+            <p><strong>Source:</strong> ${article.source.name}</p>
             <p><strong>Published at:</strong> ${new Date(article.publishedAt).toLocaleString()}</p>
         `;
 
-        // Agregar el artículo a la lista de noticias
-        newsList.appendChild(newsItem);
+        // Agregar la noticia al contenedor
+        newsContainer.appendChild(newsItem);
     });
 }
 
