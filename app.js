@@ -1,13 +1,8 @@
-document.addEventListener("DOMContentLoaded", () => {
-    console.log("TaskPlanner initialized");
-    loadTasks();
-    loadEvents();
-    document.getElementById("task-form").addEventListener("submit", addTask);
-    document.getElementById("event-form").addEventListener("submit", addEvent);
-});
 
 let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
 let events = JSON.parse(localStorage.getItem("events")) || [];
+
+const apiKey = '5f4ec6a1f0b745eca5157c7977a45f1a'; 
 
 // Función para agregar una tarea
 function addTask(event) {
@@ -209,14 +204,20 @@ function renderEvents() {
             <h3>${event.title}</h3>
             <p>${event.description}</p>
             <p><strong>Event Time:</strong> ${event.eventDate} ${event.eventTime}</p>
-            <!-- Contenedor para los botones -->
+            <p id="weather-info-${event.id}">Cargando clima...</p>  <!-- Aquí se mostrará el clima -->
             <div class="button-container">
                 <button onclick="editEvent(${event.id})">Edit</button>
                 <button onclick="deleteEvent(${event.id})">Delete</button>
             </div>
         `;
-        
-        // Agregar el evento a la lista de eventos
+
+        // Obtener y mostrar el clima para este evento
+        getWeatherForEvent(event, (weatherText) => {
+            const weatherInfoElement = document.getElementById(`weather-info-${event.id}`);
+            weatherInfoElement.textContent = weatherText;
+        });
+
+        // Agregar el evento a la lista
         eventList.appendChild(eventItem);
     });
 }
@@ -265,3 +266,89 @@ function editEvent(id) {
         deleteEvent(id);
     }
 }
+
+
+// Función para obtener el clima para la fecha y hora del evento
+function getWeatherForEvent(event, callback) {
+    // Ubicación por defecto: Madrid
+    const lat = 40.4168;
+    const lon = -3.7038;
+
+    // Crear un objeto Date para el evento, obteniendo la fecha y hora
+    const eventDate = new Date(`${event.eventDate}T${event.eventTime}`);
+    
+    // Formatear la fecha en 'YYYY-MM-DD' para la API
+    const formattedDate = eventDate.toISOString().split('T')[0];
+
+    // Llamada a la API de Open-Meteo para obtener el clima para esa fecha
+    const apiUrl = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&daily=temperature_2m_max,temperature_2m_min,precipitation_sum&timezone=Europe/Madrid`;
+
+    fetch(apiUrl)
+        .then(response => response.json())
+        .then(data => {
+            if (data.daily && data.daily.time) {
+                const index = data.daily.time.indexOf(formattedDate);
+                if (index !== -1) {
+                    const maxTemp = data.daily.temperature_2m_max[index];
+                    const minTemp = data.daily.temperature_2m_min[index];
+                    const precipitation = data.daily.precipitation_sum[index];
+
+                    // Crear el texto con la información del clima
+                    const weatherText = `Max: ${maxTemp}°C | Min: ${minTemp}°C | Precip: ${precipitation}mm`;
+                    callback(weatherText);
+                } else {
+                    callback("Clima no disponible para esta fecha.");
+                }
+            } else {
+                callback("Error obteniendo clima.");
+            }
+        })
+        .catch(error => {
+            console.error("Error fetching weather data:", error);
+            callback("Error en la API del clima.");
+        });
+}
+
+function getNews() {
+    const url = `https://newsapi.org/v2/top-headlines?language=en&pageSize=6&apiKey=${apiKey}`;
+
+    fetch(url)
+        .then(response => response.json())
+        .then(data => {
+            if (data.status === "ok") {
+                renderNews(data.articles);  // Llamamos a la función que renderiza las noticias
+            } else {
+                alert("Error al obtener noticias");
+            }
+        })
+        .catch(error => console.error("Error en la solicitud:", error));
+}
+
+function renderNews(articles) {
+    const newsList = document.getElementById("news-list");
+    newsList.innerHTML = ""; // Limpiar cualquier contenido previo
+
+    articles.forEach(article => {
+        const newsItem = document.createElement("div");
+        newsItem.classList.add("news-item");
+
+        // Crear el contenido HTML para cada artículo de noticias
+        newsItem.innerHTML = `
+            <h3><a href="${article.url}" target="_blank">${article.title}</a></h3>
+            <p>${article.description}</p>
+            <p><strong>Published at:</strong> ${new Date(article.publishedAt).toLocaleString()}</p>
+        `;
+
+        // Agregar el artículo a la lista de noticias
+        newsList.appendChild(newsItem);
+    });
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+    console.log("TaskPlanner initialized");
+    loadTasks();      // Cargar las tareas
+    loadEvents();     // Cargar los eventos
+    getNews();        // Cargar noticias al inicio
+    document.getElementById("task-form").addEventListener("submit", addTask);
+    document.getElementById("event-form").addEventListener("submit", addEvent);
+});

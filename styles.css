@@ -188,3 +188,28 @@ button:hover {
     background-color: #005f87;
 }
 
+#news-section {
+    margin-top: 30px;
+}
+
+.news-item {
+    margin-bottom: 15px;
+}
+
+.news-item h3 {
+    font-size: 18px;
+    color: #333;
+}
+
+.news-item p {
+    color: #666;
+}
+
+.news-item a {
+    text-decoration: none;
+    color: #007BFF;
+}
+
+.news-item a:hover {
+    text-decoration: underline;
+}
